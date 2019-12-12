@@ -1,0 +1,96 @@
+{
+  "name": "vue-image-kit",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Vue.js Image Kit Component with Lazy Load built in and Responsive Images",
+  "homepage": "https://github.com/guastallaigor/vue-image-kit#readme",
+  "author": "Igor Guastalla de Lima",
+  "scripts": {
+    "lint": "vue-cli-service lint",
+    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
+    "storybook": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
+    "test:unit": "vue-cli-service test:unit",
+    "test:watch": "vue-cli-service test:unit --watch",
+    "commit": "git-cz",
+    "commit:retry": "git-cz --retry",
+    "commitmsg": "commitlint -e"
+  },
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.7.4",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@storybook/addon-actions": "^5.2.6",
+    "@storybook/addon-backgrounds": "^5.2.6",
+    "@storybook/addon-knobs": "^5.2.6",
+    "@storybook/addon-links": "^5.2.6",
+    "@storybook/addon-notes": "^5.2.6",
+    "@vue/cli-plugin-babel": "^4.1.1",
+    "@vue/cli-plugin-eslint": "^4.1.1",
+    "@vue/cli-plugin-unit-jest": "^4.1.1",
+    "@vue/cli-service": "^4.1.1",
+    "@vue/eslint-config-standard": "^5.0.0",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "babel-core": "6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "commitizen": "^4.0.3",
+    "core-js": "3.4.5",
+    "eslint": "^6.7.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.0.1",
+    "husky": "^3.1.0",
+    "vue-cli-plugin-storybook": "^0.6.1",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "bugs": {
+    "url": "https://github.com/guastallaigor/vue-image-kit/issues"
+  },
+  "files": [
+    "src/*",
+    "*.json",
+    "*.js"
+  ],
+  "keywords": [
+    "vue",
+    "vuejs",
+    "image",
+    "lazy-load",
+    "kit",
+    "component",
+    "image-kit"
+  ],
+  "license": "MIT",
+  "main": "./vue-image-kit.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:guastallaigor/vue-image-kit.git"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        0,
+        "never",
+        "sentence-case"
+      ],
+      "subject-full-stop": [
+        0,
+        "never",
+        "."
+      ]
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
