@@ -1,5 +1,3 @@
-<h1 align="center">Component and documentation is still a WIP</h1>
-
 <div align="center">
   <img src="./.github/logo.png" width="200px">
   <h1>Vue Image Kit</h1>
@@ -8,7 +6,7 @@
   Vue.js Image Kit Component with Lazy Load built in and Responsive Images
 </p>
 <p align="center">
-  <a href="https://codesandbox.io/s/vue-lazy-load-image-ls9rh?fontsize=14&hidenavigation=1&module=%2Fsrc%2FApp.vue&theme=dark" target="_blank">Inspiration</a> and a talk from <a href="https://github.com/derevandal" target="_blank">@derevandal</a>
+  The inspiration comes from <a href="https://codesandbox.io/s/vue-lazy-load-image-ls9rh?fontsize=14&hidenavigation=1&module=%2Fsrc%2FApp.vue&theme=dark" target="_blank">this</a> and a talk from <a href="https://github.com/derevandal" target="_blank">@derevandal</a>
 </p>
 
 <p align="center">
@@ -19,9 +17,19 @@
     <a href="http://standardjs.com"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Style standard"></a>
 </p>
 
+> **Note:**
+> This is an unofficial project.
+> I do not work or am I affiliated with Image Kit
+
 ## Demo
 
 **TODO**
+
+## How does it work
+
+This component uses the [Image Kit](https://imagekit.io/) [Real-time URL-based image transformation](https://imagekit.io/features/image-resize-smart-crop-responsive-dpr-client-hints), so you will need to have your images over [Image Kit](https://imagekit.io/) for it to work
+
+For more informations about [Image Kit](https://imagekit.io/), consult their website
 
 ## How to install
 
@@ -84,54 +92,34 @@ plugins: [
 
 ```html
 <template>
-  <vue-image-kit :items="items"/>
+  <div>
+    <div style="height:4500px;width:100vw;background:gray">&nbsp;</div>
+    <vue-image-kit
+      hash="6xhf1gnexgdgk"
+      src="lion_BllLvaqVn.jpg"
+      width="1400px"
+      height="800px"
+      alt="Lion image"
+    />
+  </div>
 </template>
-
-<script>
-export default {  
-  data() {
-    const example1 = {
-      title: 'Title example 1',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio.'
-    }
-    const example2 = {
-      title: 'Title example 2',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio.'
-    }
-    const example3 = {
-      title: 'Title example 3',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio.'
-    }
-    const items = [example1, example2, example3]
-
-    return { items }
-  }
-}
-</script>
 ```
 
 ## Props
 
-| Property name       | Type    | Default   | Description                                                                                    |
-|---------------------|--------:|:---------:|------------------------------------------------------------------------------------------------|
-| items               | Array   | null      | Array of objects to be displayed. Must have at least a content property                        |
-| item-selected       | Object  | {}        | Object that is set when it is clicked. Note that `clickable` prop must be set to true          |
-| item-unique-key     | String  | ''        | Key to set a blue border to the card when it is clicked (`clickable` prop must be set to true) |
-| title-attr          | String  | 'title'   | Name of the property inside the objects, that are in the items array, to set the cards title   |
-| title-centered      | Boolean | false     | Centralizes the cards title                                                                    |
-| title-class         | String  | ''        | If you want to set a custom class to the cards title, set it here                              |
-| title-substr        | String  | 18        | Number of characters to display inside the cards title. Above this, will set a '...' mask      |
-| content-attr        | String  | 'content' | Name of the property inside the objects, that are in the items array, to set the cards content |
-| content-centered    | Boolean | false     | Centralizes all the cards content text                                                         |
-| content-class       | String  | ''        | If you want to set a custom class to the cards content, set it here                            |
-| content-substr      | String  | 250       | Number of characters to display inside the cards content. Above this, will set a '...' mask    |
-| has-slot            | String  | false     | Set to true if you pass a `<slot>` to override `title` and `content` attributes                |
-| min-width           | String  | '200px'   | Min-width of the timeline                                                                      |
-| min-height          | String  | ''        | Min-height of the timeline                                                                     |
-| timeline-padding    | String  | ''        | Padding of the timeline                                                                        |
-| timeline-background | String  | '#E9E9E9' | Background color of the whole timeline                                                         |
-| line-color          | String  | '#03A9F4' | Color of the line inside the timeline                                                          |
-| clickable           | Boolean | true      | Makes the card clickable that returns the object                                               |
+| Property name   | Type   | Default         | Required | Description                                                                         |
+|-----------------|--------|-----------------|----------|-------------------------------------------------------------------------------------|
+| hash            | String | null            | true     | Images hash. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the hash is '6xhf1gnexgdgk' |
+| src             | String | null            | true     | Images source. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the source is 'lion_BllLvaqVn.jpg' |
+| placeholder     | String | ''              | false    | Images placeholder. Here you can pass a link |
+| backgroundColor | String | ''              | false    | Background color of the images placeholder |
+| srcset          | Array  | [320, 480, 800] | false    | Array of numbers that will define the images srcset attribute. Each number correspond to one of the images width |
+| sizes           | Array  | []              | false    | Array of numbers that will define the images sizes attribute. Each number correspond to one of the images max-width. Empty by default, which gets each of the images srcset prop and subtract by 40px |
+| defaultSize     | Number | 1080            | true     | Images default size. Must be larger than the largest srcset and sizes |
+| customTransform | String | ''              | false    | Use this to append any extra image kit transform that you want |
+| width           | String | ''              | false    | Images width. Any valid CSS unit It will be set with inline style |
+| height          | String | ''              | false    | Images height. Any valid CSS unit. It will be set with inline style |
+| alt             | String | ''              | false    | Images alt attribute |
 
 ## Development
 

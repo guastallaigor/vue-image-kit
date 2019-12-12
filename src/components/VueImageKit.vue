@@ -1,6 +1,6 @@
 <template>
   <div class="vue-image-kit">
-    <div v-if="dataUrl" :style="{ background }" class="vue-image-kit__placeholder">
+    <div v-if="dataUrl" :style="{ backgroundColor }" class="vue-image-kit__placeholder">
       <img :src="placeholder || dataUrl" :alt="alt" :style="{ width, height }">
     </div>
     <img :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width, height }" class="vue-image-kit__img"/>
@@ -23,7 +23,7 @@ export default {
       type: String,
       default: ''
     },
-    background: {
+    backgroundColor: {
       type: String,
       default: ''
     },
