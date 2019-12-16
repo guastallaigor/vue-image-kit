@@ -84,7 +84,7 @@ Vue.use(VueImageKit)
 and then import it in your `nuxt.config.js` file
 ```js
 plugins: [
-    '~/plugins/vue-image-kit.js'
+  { src: '~/plugins/vue-image-kit', mode: 'client' }
 ]
 ```
 
@@ -92,16 +92,13 @@ plugins: [
 
 ```html
 <template>
-  <div>
-    <div style="height:4500px;width:100vw;background:gray">&nbsp;</div>
-    <vue-image-kit
-      hash="6xhf1gnexgdgk"
-      src="lion_BllLvaqVn.jpg"
-      width="1400px"
-      height="800px"
-      alt="Lion image"
-    />
-  </div>
+  <vue-image-kit
+    hash="6xhf1gnexgdgk"
+    src="lion_BllLvaqVn.jpg"
+    :width="1400"
+    :height="800"
+    alt="Lion image"
+  />
 </template>
 ```
 
@@ -117,8 +114,8 @@ plugins: [
 | sizes           | Array  | []              | false    | Array of numbers that will define the images sizes attribute. Each number correspond to one of the images max-width. Empty by default, which gets each of the images srcset prop and subtract by 40px |
 | defaultSize     | Number | 1080            | true     | Images default size. Must be larger than the largest srcset and sizes |
 | customTransform | String | ''              | false    | Use this to append any extra image kit transform that you want |
-| width           | String | ''              | false    | Images width. Any valid CSS unit It will be set with inline style |
-| height          | String | ''              | false    | Images height. Any valid CSS unit. It will be set with inline style |
+| width           | Number | null            | false    | Images width. Width number in pixels. It will be set with inline style |
+| height          | Number | null            | false    | Images height. Height number in pixels. It will be set with inline style |
 | alt             | String | ''              | false    | Images alt attribute |
 
 ## Development

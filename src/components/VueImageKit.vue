@@ -1,9 +1,9 @@
 <template>
   <div class="vue-image-kit">
     <div v-if="dataUrl" :style="{ backgroundColor }" class="vue-image-kit__placeholder">
-      <img :src="placeholder || dataUrl" :alt="alt" :style="{ width, height }">
+      <img :src="placeholder || dataUrl" alt="Placeholder" :style="{ width: `${width}px`, height: `${height}px` }">
     </div>
-    <img :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width, height }" class="vue-image-kit__img"/>
+    <img :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }" class="vue-image-kit__img"/>
   </div>
 </template>
 
@@ -28,12 +28,12 @@ export default {
       default: ''
     },
     width: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     },
     height: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     },
     alt: {
       type: String,

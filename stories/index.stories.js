@@ -36,7 +36,7 @@ timelineStory.add('Default', () => {
         type: String,
         default: text('Placeholder', '')
       },
-      background: {
+      backgroundColor: {
         type: String,
         default: text('Background', '')
       },
@@ -73,7 +73,7 @@ timelineStory.add('Default', () => {
       :hash="hash"
       :src="src"
       :placeholder="placeholder"
-      :background="background"
+      :background-color="backgroundColor"
       :srcset="srcset"
       :sizes="sizes"
       :width="width"
