@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import VueImageKit from '../../src/components/VueImageKit'
 import 'jest-canvas-mock'
 
@@ -7,31 +7,30 @@ function setupIntersectionObserverMock({
   unobserve = () => null,
 } = {}) {
   class IntersectionObserver {
-    observe = observe;
-    unobserve = unobserve;
+    observe = observe
+    unobserve = unobserve
+    disconnect() {}
   }
   Object.defineProperty(
     window,
     'IntersectionObserver',
     { writable: true, configurable: true, value: IntersectionObserver }
-  );
+  )
   Object.defineProperty(
     global,
     'IntersectionObserver',
     { writable: true, configurable: true, value: IntersectionObserver }
-  );
+  )
 }
 
 describe('When I create the VueImageKit component', () => {
   const item = { hash: '6xhf1gnexgdgk', src: 'lion_BllLvaqVn.jpg' }
 
   beforeEach(() => {
-    setupIntersectionObserverMock();
+    setupIntersectionObserverMock()
   })
-  const createComponent = (propsData = {}, slot) => {
-    return mount(VueImageKit, {
-      propsData
-    })
+  const createComponent = (propsData = {}) => {
+    return shallowMount(VueImageKit, { propsData })
   }
 
   it('should be a Vue instance', () => {
@@ -67,7 +66,6 @@ describe('When I create the VueImageKit component', () => {
     const sizes = wrapper.vm.$options.props.sizes
     expect(sizes.required).toBeFalsy()
     expect(sizes.type).toBe(Array)
-    console.log(JSON.stringify(sizes.default))
     expect(JSON.stringify(sizes.default)).toBeFalsy()
     const defaultSize = wrapper.vm.$options.props.defaultSize
     expect(defaultSize.required).toBeFalsy()
@@ -123,23 +121,84 @@ describe('When I create the VueImageKit component', () => {
     expect(placeholder.attributes().style).toBe('background-color: rgb(255, 68, 0);') // #f40
   })
 
-  // ! Missing tests for props
-  // srcset: {
-  //   type: Array,
-  //   default: () => [320, 480, 800]
-  // },
-  // sizes: {
-  //   type: Array,
-  //   default: () => []
-  // },
-  // defaultSize: {
-  //   type: Number,
-  //   default: 1080
-  // },
-  // customTransform: {
-  //   type: String,
-  //   default: ''
-  // }
+  it('should have different srcset from default', () => {
+    const wrapper = createComponent({ ...item, srcset: [400, 600, 900] })
+    const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
+    expect(main.exists()).toBe(true)
+    const expected = 'https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-400/lion_BllLvaqVn.jpg 400w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-600/lion_BllLvaqVn.jpg 600w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-900/lion_BllLvaqVn.jpg 900w'
+    expect(main.attributes().srcset).toBe(expected)
+  })
+
+  it('should have different sizes from default', () => {
+    const wrapper = createComponent({ ...item, srcset: [200, 250, 300] })
+    const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
+    expect(main.exists()).toBe(true)
+    const expected = '(max-width: 200px) 160px, (max-width: 250px) 210px, (max-width: 300px) 260px 1080px'
+    expect(main.attributes().sizes).toBe(expected)
+  })
+
+  it('should have different default size', () => {
+    const wrapper = createComponent({ ...item, defaultSize: 1366 })
+    const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
+    expect(main.exists()).toBe(true)
+    expect(main.attributes().sizes).toContain('1366px')
+  })
+
+  it('should have a custom transform', () => {
+    // https://imagekit.io/features/advanced-image-manipulation-blur-rotate-crop-background-radius
+    const customTransform = 'c-at_max,bl-1:r-20,bg-FFCFA1'
+    const wrapper = createComponent({ ...item, customTransform })
+    const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
+    expect(main.exists()).toBe(true)
+    expect(main.attributes().srcset).toContain(customTransform)
+  })
+
+  it('should disconnect the observer on destroy', () => {
+    const wrapper = createComponent({ ...item })
+    expect(wrapper.vm.observer).toStrictEqual(new IntersectionObserver({ observe: () => jest.fn(), unobserve: () => jest.fn() }))
+    wrapper.destroy()
+    expect(wrapper.vm.observer).toStrictEqual(new IntersectionObserver({ observe: () => jest.fn(), unobserve: () => jest.fn() }))
+    const disconnect = jest.fn()
+    expect(JSON.stringify(wrapper.vm.observer.disconnect)).toBe(JSON.stringify(disconnect))
+    expect(wrapper.exists()).toBeFalsy()
+  })
+
+  it('should clear the timeout on disconnect', (done) => {
+    const wrapper = createComponent({ ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' })
+    expect(wrapper.exists()).toBe(true)
+    setTimeout(() => {
+      wrapper.destroy()
+      expect(wrapper.vm.timeOut).toBe(null)
+      done()
+    }, 500)
+  })
+
+  it('should set the src and srcset methods', (done) => {
+    const localVue = createLocalVue()
+    const wrapper = mount(VueImageKit, {
+      propsData: { ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' },
+      localVue,
+      stubs: {
+        transition: false
+      }
+    })
+    wrapper.vm.observer.disconnect = jest.fn()
+    wrapper.vm.observer.disconnect = jest.fn()
+    expect(wrapper.exists()).toBe(true)
+    wrapper.vm.triggerIntersection({ isIntersecting: true })
+    expect(wrapper.vm.timeOut).toBeNull()
+    expect(wrapper.vm.showCanvas).toBeFalsy()
+    const img = wrapper.find('.vue-image-kit__img')
+    expect(img.exists()).toBe(true)
+    const placeholder = wrapper.find('.vue-image-kit__placeholder')
+    expect(placeholder.exists()).toBe(true)
+    setTimeout(() => {
+      const placeholderAgain = wrapper.find('.vue-image-kit__placeholder')
+      expect(placeholderAgain.exists()).toBe(false)
+      expect(wrapper.vm.timeOut).toBeNull()
+      done()
+    }, 301)
+  })
 
   it('should match snapshot', () => {
     const wrapper = createComponent({

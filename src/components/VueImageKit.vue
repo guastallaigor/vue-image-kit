@@ -57,8 +57,10 @@ export default {
     }
   },
   data: () => ({
-    imageKitPrefix: '',
-    showCanvas: true
+    imageKitPrefix: 'https://ik.imagekit.io',
+    showCanvas: true,
+    observer: null,
+    timeOut: null
   }),
   computed: {
     dataUrl () {
@@ -97,24 +99,32 @@ export default {
     }
   },
   mounted () {
-    // const protocol = document.location.protocol !== 'https:' ? 'http://' : 'https://'
-    const protocol = 'https://'
-    this.imageKitPrefix = `${protocol}ik.imagekit.io`
-
-    const { src, srcset, $el, getSrcset, imageKitPrefix, hash } = this
-    let timeOut = null
     this.showCanvas = true
 
-    const observer = new IntersectionObserver(([entry]) => {
-      const img = $el.querySelector('.vue-image-kit__img')
-      const placeholder = $el.querySelector('.vue-image-kit__placeholder')
+    this.observer = new IntersectionObserver(([entry]) => {
+      this.triggerIntersection(entry)
+    })
+    this.observer.observe(this.$el)
+
+    this.$once('hook:beforeDestroy', () => {
+      this.observer.disconnect()
+
+      if (this.timeOut) {
+        clearTimeout(this.timeOut)
+      }
+    })
+  },
+  methods: {
+    triggerIntersection(entry = {}) {
+      const img = this.$el.querySelector('.vue-image-kit__img')
+      const placeholder = this.$el.querySelector('.vue-image-kit__placeholder')
 
       img.onload = function () {
         delete img.onload
-        $el.classList.add('vue-image-kit--loaded')
+        this.$el.classList.add('vue-image-kit--loaded')
 
         if (placeholder) {
-          timeOut = setTimeout(() => {
+          this.timeOut = setTimeout(() => {
             placeholder.remove()
           }, 300)
         }
@@ -122,23 +132,14 @@ export default {
       if (entry.isIntersecting) {
         this.showCanvas = false
 
-        if (srcset) {
-          img.srcset = getSrcset
+        if (this.srcset) {
+          img.srcset = this.getSrcset
         }
 
-        img.src = `${imageKitPrefix}/${hash}/${src}`
-        observer.disconnect()
+        img.src = `${this.imageKitPrefix}/${this.hash}/${this.src}`
+        this.observer.disconnect()
       }
-    })
-    observer.observe($el)
-
-    this.$once('hook:beforeDestroy', () => {
-      observer.disconnect()
-
-      if (timeOut) {
-        clearTimeout(timeOut)
-      }
-    })
+    }
   }
 }
 </script>

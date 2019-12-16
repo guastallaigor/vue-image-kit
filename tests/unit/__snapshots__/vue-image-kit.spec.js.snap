@@ -2,5 +2,5 @@
 
 exports[`When I create the VueImageKit component should match snapshot 1`] = `
 <div class="vue-image-kit">
-  <!----> <img srcset="/6xhf1gnexgdgk/tr:w-320/lion_BllLvaqVn.jpg 320w, /6xhf1gnexgdgk/tr:w-480/lion_BllLvaqVn.jpg 480w, /6xhf1gnexgdgk/tr:w-800/lion_BllLvaqVn.jpg 800w" sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, (max-width: 800px) 760px 1080px" src="" alt="" class="vue-image-kit__img"></div>
+  <!----> <img srcset="https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-320/lion_BllLvaqVn.jpg 320w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-480/lion_BllLvaqVn.jpg 480w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-800/lion_BllLvaqVn.jpg 800w" sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, (max-width: 800px) 760px 1080px" src="" alt="" class="vue-image-kit__img"></div>
 `;
