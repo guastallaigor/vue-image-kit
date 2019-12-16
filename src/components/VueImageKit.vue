@@ -1,9 +1,9 @@
 <template>
   <div class="vue-image-kit">
-    <div v-if="dataUrl" :style="{ backgroundColor }" class="vue-image-kit__placeholder">
-      <img :src="placeholder || dataUrl" alt="Placeholder" :style="{ width: `${width}px`, height: `${height}px` }">
+    <div v-if="dataUrl" class="vue-image-kit__placeholder" :style="{ backgroundColor }">
+      <img :src="placeholder || dataUrl" alt="Placeholder" :style="{ width: `${width}px`, height: `${height}px` }"/>
     </div>
-    <img :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }" class="vue-image-kit__img"/>
+    <img class="vue-image-kit__img" :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }"/>
   </div>
 </template>
 
@@ -77,35 +77,37 @@ export default {
     },
     getSrc () {
       const { showCanvas, dataUrl, imageKitPrefix, hash, src } = this
+
       return showCanvas
         ? dataUrl
         : `${imageKitPrefix}/${hash}/${src}`
     },
     getSrcset () {
-      return this.srcset
-        .map(size => `${this.imageKitPrefix}/${this.hash}/tr:w-${size}${this.customTransform ? ',' + this.customTransform : ''}/${this.src} ${size}w`)
+      const { srcset, imageKitPrefix, hash, customTransform, src } = this
+
+      return srcset
+        .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform ? ',' + customTransform : ''}/${src} ${size}w`)
         .join(', ')
     },
     getSizes () {
-      let sizes = ''
-      if (this.sizes && this.sizes.length && (this.sizes.length === this.srcset.length)) {
-        sizes = this.srcset.map((size, idx) => `(max-width: ${size}px) ${this.sizes[idx]}px`).join(', ')
+      const { sizes, srcset, defaultSize } = this
+      let sizesString = ''
+      if (sizes && sizes.length && (sizes.length === srcset.length)) {
+        sizesString = srcset.map((size, idx) => `(max-width: ${size}px) ${sizes[idx]}px`).join(', ')
       }
 
-      sizes = this.srcset.map(size => `(max-width: ${size}px) ${parseInt(size, 10) - 40}px`).join(', ')
-      sizes += ` ${this.defaultSize}px`
+      sizesString = srcset.map(size => `(max-width: ${size}px) ${parseInt(size, 10) - 40}px`).join(', ')
+      sizesString += ` ${defaultSize}px`
 
-      return sizes
+      return sizesString
     }
   },
   mounted () {
     this.showCanvas = true
-
     this.observer = new IntersectionObserver(([entry]) => {
       this.triggerIntersection(entry)
     })
     this.observer.observe(this.$el)
-
     this.$once('hook:beforeDestroy', () => {
       this.observer.disconnect()
 
@@ -116,27 +118,29 @@ export default {
   },
   methods: {
     triggerIntersection(entry = {}) {
-      const img = this.$el.querySelector('.vue-image-kit__img')
-      const placeholder = this.$el.querySelector('.vue-image-kit__placeholder')
+      const { $el, timeOut, srcset, getSrcset, imageKitPrefix, hash, src } = this
+      const img = $el.querySelector('.vue-image-kit__img')
+      const placeholder = $el.querySelector('.vue-image-kit__placeholder')
 
       img.onload = function () {
         delete img.onload
-        this.$el.classList.add('vue-image-kit--loaded')
+        $el.classList.add('vue-image-kit--loaded')
 
         if (placeholder) {
-          this.timeOut = setTimeout(() => {
+          timeOut = setTimeout(() => {
             placeholder.remove()
           }, 300)
         }
       }
+
       if (entry.isIntersecting) {
         this.showCanvas = false
 
-        if (this.srcset) {
-          img.srcset = this.getSrcset
+        if (srcset) {
+          img.srcset = getSrcset
         }
 
-        img.src = `${this.imageKitPrefix}/${this.hash}/${this.src}`
+        img.src = `${imageKitPrefix}/${hash}/${src}`
         this.observer.disconnect()
       }
     }

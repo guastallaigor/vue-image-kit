@@ -23,6 +23,10 @@ function setupIntersectionObserverMock({
   )
 }
 
+function waitForImageToLoad(imageElement) {
+  return new Promise(resolve => { imageElement.onload = resolve })
+}
+
 describe('When I create the VueImageKit component', () => {
   const item = { hash: '6xhf1gnexgdgk', src: 'lion_BllLvaqVn.jpg' }
 
@@ -173,7 +177,8 @@ describe('When I create the VueImageKit component', () => {
     }, 500)
   })
 
-  it('should set the src and srcset methods', (done) => {
+  it('should trigger intersection', (done) => {
+    // ! WIP
     const localVue = createLocalVue()
     const wrapper = mount(VueImageKit, {
       propsData: { ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' },
@@ -183,7 +188,6 @@ describe('When I create the VueImageKit component', () => {
       }
     })
     wrapper.vm.observer.disconnect = jest.fn()
-    wrapper.vm.observer.disconnect = jest.fn()
     expect(wrapper.exists()).toBe(true)
     wrapper.vm.triggerIntersection({ isIntersecting: true })
     expect(wrapper.vm.timeOut).toBeNull()
@@ -192,10 +196,16 @@ describe('When I create the VueImageKit component', () => {
     expect(img.exists()).toBe(true)
     const placeholder = wrapper.find('.vue-image-kit__placeholder')
     expect(placeholder.exists()).toBe(true)
+    expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeDefined()
     setTimeout(() => {
+      const imgQuerySelector = wrapper.vm.$el.querySelector('.vue-image-kit__img')
+      waitForImageToLoad(imgQuerySelector)
+      // expect(imgQuerySelector.classList).toContainEqual(['vue-image-kit--loaded'])
       const placeholderAgain = wrapper.find('.vue-image-kit__placeholder')
       expect(placeholderAgain.exists()).toBe(false)
       expect(wrapper.vm.timeOut).toBeNull()
+      expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeNull()
+      // expect(wrapper.vm.$el.querySelector('.vue-image-kit__img').onload).toHaveBeenCalled()
       done()
     }, 301)
   })
