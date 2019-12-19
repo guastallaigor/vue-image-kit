@@ -6,7 +6,7 @@
   Vue.js Image Kit Component with Lazy Load built in and Responsive Images
 </p>
 <p align="center">
-  The inspiration comes from <a href="https://codesandbox.io/s/vue-lazy-load-image-ls9rh?fontsize=14&hidenavigation=1&module=%2Fsrc%2FApp.vue&theme=dark" target="_blank">this</a> and a talk from <a href="https://github.com/derevandal" target="_blank">@derevandal</a>
+  The inspiration comes from <a href="https://codesandbox.io/s/vue-lazy-load-image-ls9rh?fontsize=14&hidenavigation=1&module=%2Fsrc%2FApp.vue&theme=dark" target="_blank">this</a> and a talk from <a href="https://github.com/derevandal" target="_blank">@derevandal</a> in <a href="https://github.com/femug" target="_blank">@femug</a>
 </p>
 
 <p align="center">
@@ -18,8 +18,11 @@
 </p>
 
 > **Notes:**
+
 > This is an unofficial project.
+
 > I do not work or am I affiliated with Image Kit
+
 > :warning: **Warning**: This project is in it's early stage. I do not recommend to use this in a production environment yet! :warning:
 
 ## Demo
@@ -28,7 +31,7 @@
 
 ## How does it work
 
-This component uses the [Image Kit](https://imagekit.io/) [Real-time URL-based image transformation](https://imagekit.io/features/image-resize-smart-crop-responsive-dpr-client-hints), so you will need to have your images over [Image Kit](https://imagekit.io/) for it to work
+This component uses the [Image Kit Real-time URL-based image transformation](https://imagekit.io/features/image-resize-smart-crop-responsive-dpr-client-hints), so you will need to have your images over [Image Kit](https://imagekit.io/) for it to work
 
 For more informations about [Image Kit](https://imagekit.io/), consult their website
 
