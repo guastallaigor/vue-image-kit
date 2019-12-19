@@ -2,14 +2,14 @@ import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import VueImageKit from '../../src/components/VueImageKit'
 import 'jest-canvas-mock'
 
-function setupIntersectionObserverMock({
+function setupIntersectionObserverMock ({
   observe = () => null,
-  unobserve = () => null,
+  unobserve = () => null
 } = {}) {
   class IntersectionObserver {
     observe = observe
     unobserve = unobserve
-    disconnect() {}
+    disconnect () {}
   }
   Object.defineProperty(
     window,
@@ -23,16 +23,13 @@ function setupIntersectionObserverMock({
   )
 }
 
-function waitForImageToLoad(imageElement) {
-  return new Promise(resolve => { imageElement.onload = resolve })
-}
-
 describe('When I create the VueImageKit component', () => {
   const item = { hash: '6xhf1gnexgdgk', src: 'lion_BllLvaqVn.jpg' }
 
   beforeEach(() => {
     setupIntersectionObserverMock()
   })
+
   const createComponent = (propsData = {}) => {
     return shallowMount(VueImageKit, { propsData })
   }
@@ -141,6 +138,16 @@ describe('When I create the VueImageKit component', () => {
     expect(main.attributes().sizes).toBe(expected)
   })
 
+  it('should have different sizes and srcset from default', () => {
+    const wrapper = createComponent({ ...item, srcset: [210, 220, 230], sizes: [210, 220, 230] })
+    const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
+    expect(main.exists()).toBe(true)
+    const expected = '(max-width: 210px) 210px, (max-width: 220px) 220px, (max-width: 230px) 230px 1080px'
+    expect(main.attributes().sizes).toBe(expected)
+    const expectedSrcset = 'https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-210/lion_BllLvaqVn.jpg 210w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-220/lion_BllLvaqVn.jpg 220w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-230/lion_BllLvaqVn.jpg 230w'
+    expect(main.attributes().srcset).toBe(expectedSrcset)
+  })
+
   it('should have different default size', () => {
     const wrapper = createComponent({ ...item, defaultSize: 1366 })
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
@@ -170,15 +177,14 @@ describe('When I create the VueImageKit component', () => {
   it('should clear the timeout on disconnect', (done) => {
     const wrapper = createComponent({ ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' })
     expect(wrapper.exists()).toBe(true)
+    wrapper.destroy()
     setTimeout(() => {
-      wrapper.destroy()
       expect(wrapper.vm.timeOut).toBe(null)
       done()
     }, 500)
   })
 
-  it('should trigger intersection', (done) => {
-    // ! WIP
+  it('should trigger intersection', async () => {
     const localVue = createLocalVue()
     const wrapper = mount(VueImageKit, {
       propsData: { ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' },
@@ -197,17 +203,12 @@ describe('When I create the VueImageKit component', () => {
     const placeholder = wrapper.find('.vue-image-kit__placeholder')
     expect(placeholder.exists()).toBe(true)
     expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeDefined()
-    setTimeout(() => {
-      const imgQuerySelector = wrapper.vm.$el.querySelector('.vue-image-kit__img')
-      waitForImageToLoad(imgQuerySelector)
-      // expect(imgQuerySelector.classList).toContainEqual(['vue-image-kit--loaded'])
-      const placeholderAgain = wrapper.find('.vue-image-kit__placeholder')
-      expect(placeholderAgain.exists()).toBe(false)
-      expect(wrapper.vm.timeOut).toBeNull()
-      expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeNull()
-      // expect(wrapper.vm.$el.querySelector('.vue-image-kit__img').onload).toHaveBeenCalled()
-      done()
-    }, 301)
+    wrapper.vm.$el.querySelector('.vue-image-kit__img').onload()
+    await wrapper.vm.$nextTick()
+    const placeholderAgain = wrapper.find('.vue-image-kit__placeholder')
+    expect(placeholderAgain.exists()).toBe(false)
+    expect(wrapper.vm.timeOut).not.toBeNull()
+    expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeNull()
   })
 
   it('should match snapshot', () => {

@@ -17,9 +17,10 @@
     <a href="http://standardjs.com"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Style standard"></a>
 </p>
 
-> **Note:**
+> **Notes:**
 > This is an unofficial project.
 > I do not work or am I affiliated with Image Kit
+> :warning: **Warning**: This project is in it's early stage. I do not recommend to use this in a production environment yet! :warning:
 
 ## Demo
 

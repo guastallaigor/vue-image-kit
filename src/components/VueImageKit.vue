@@ -92,11 +92,13 @@ export default {
     getSizes () {
       const { sizes, srcset, defaultSize } = this
       let sizesString = ''
+
       if (sizes && sizes.length && (sizes.length === srcset.length)) {
         sizesString = srcset.map((size, idx) => `(max-width: ${size}px) ${sizes[idx]}px`).join(', ')
+      } else {
+        sizesString = srcset.map(size => `(max-width: ${size}px) ${parseInt(size, 10) - 40}px`).join(', ')
       }
 
-      sizesString = srcset.map(size => `(max-width: ${size}px) ${parseInt(size, 10) - 40}px`).join(', ')
       sizesString += ` ${defaultSize}px`
 
       return sizesString
@@ -117,21 +119,26 @@ export default {
     })
   },
   methods: {
-    triggerIntersection(entry = {}) {
-      const { $el, timeOut, srcset, getSrcset, imageKitPrefix, hash, src } = this
-      const img = $el.querySelector('.vue-image-kit__img')
+    onloadImage (imgEl) {
+      delete imgEl.onload
+      const { $el } = this
       const placeholder = $el.querySelector('.vue-image-kit__placeholder')
 
-      img.onload = function () {
-        delete img.onload
-        $el.classList.add('vue-image-kit--loaded')
+      $el.classList.add('vue-image-kit--loaded')
 
-        if (placeholder) {
-          timeOut = setTimeout(() => {
-            placeholder.remove()
-          }, 300)
-        }
+      if (placeholder) {
+        this.timeOut = setTimeout(() => {
+          placeholder.remove()
+        }, 300)
       }
+    },
+    triggerIntersection (entry = {}) {
+      const { $el, srcset, getSrcset, imageKitPrefix, hash, src } = this
+      const img = $el.querySelector('.vue-image-kit__img')
+
+      img.onload = function () {
+        this.onloadImage(img)
+      }.bind(this)
 
       if (entry.isIntersecting) {
         this.showCanvas = false

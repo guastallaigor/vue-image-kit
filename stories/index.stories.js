@@ -57,12 +57,12 @@ timelineStory.add('Default', () => {
         default: text('Custom transform', '')
       },
       width: {
-        type: String,
-        default: text('Width', '1400px')
+        type: Number,
+        default: number('Width', 1400)
       },
       height: {
-        type: String,
-        default: text('Height', '800px')
+        type: Number,
+        default: number('Height', 800)
       },
       alt: {
         type: String,
