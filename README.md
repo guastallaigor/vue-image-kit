@@ -25,7 +25,7 @@
 
 ## Demo
 
-**TODO**
+[![Edit Checkbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-image-kit-keeh1)
 
 ## How does it work
 
