@@ -17,3 +17,6 @@ storybook-static
 config
 stories
 tests
+coverage
+.eslintrc.js
+.huskyrc.json
