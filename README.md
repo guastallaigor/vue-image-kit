@@ -18,9 +18,7 @@
 </p>
 
 > **Notes:**
-
 > This is an unofficial project.
-
 > I do not work or am I affiliated with Image Kit
 
 > :warning: **Warning**: This project is in it's early stage. I do not recommend to use this in a production environment yet! :warning:
