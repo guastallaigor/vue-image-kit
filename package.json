@@ -1,6 +1,6 @@
 {
   "name": "vue-image-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "description": "Vue.js Image Kit Component with Lazy Load built in and Responsive Images",
   "homepage": "https://github.com/guastallaigor/vue-image-kit#readme",

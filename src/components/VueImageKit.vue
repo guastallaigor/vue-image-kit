@@ -3,7 +3,7 @@
     <div v-if="dataUrl" class="vue-image-kit__placeholder" :style="{ backgroundColor }">
       <img :src="placeholder || dataUrl" alt="Placeholder" :style="{ width: `${width}px`, height: `${height}px` }"/>
     </div>
-    <img class="vue-image-kit__img" :srcset="getSrcset" :sizes="getSizes" :src="getSrc" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }"/>
+    <img class="vue-image-kit__img" :sizes="getSizes" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }"/>
   </div>
 </template>
 
@@ -74,13 +74,6 @@ export default {
       canvas.height = (height / width) * w
 
       return canvas.toDataURL()
-    },
-    getSrc () {
-      const { showCanvas, dataUrl, imageKitPrefix, hash, src } = this
-
-      return showCanvas
-        ? dataUrl
-        : `${imageKitPrefix}/${hash}/${src}`
     },
     getSrcset () {
       const { srcset, imageKitPrefix, hash, customTransform, src } = this

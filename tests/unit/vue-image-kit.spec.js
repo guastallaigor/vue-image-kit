@@ -122,26 +122,32 @@ describe('When I create the VueImageKit component', () => {
     expect(placeholder.attributes().style).toBe('background-color: rgb(255, 68, 0);') // #f40
   })
 
-  it('should have different srcset from default', () => {
+  it('should have different srcset from default', async () => {
     const wrapper = createComponent({ ...item, srcset: [400, 600, 900] })
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
     expect(main.exists()).toBe(true)
+    wrapper.vm.triggerIntersection({ isIntersecting: true })
+    await wrapper.vm.$nextTick()
     const expected = 'https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-400/lion_BllLvaqVn.jpg 400w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-600/lion_BllLvaqVn.jpg 600w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-900/lion_BllLvaqVn.jpg 900w'
     expect(main.attributes().srcset).toBe(expected)
   })
 
-  it('should have different sizes from default', () => {
+  it('should have different sizes from default', async () => {
     const wrapper = createComponent({ ...item, srcset: [200, 250, 300] })
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
     expect(main.exists()).toBe(true)
+    wrapper.vm.triggerIntersection({ isIntersecting: true })
+    await wrapper.vm.$nextTick()
     const expected = '(max-width: 200px) 160px, (max-width: 250px) 210px, (max-width: 300px) 260px 1080px'
     expect(main.attributes().sizes).toBe(expected)
   })
 
-  it('should have different sizes and srcset from default', () => {
+  it('should have different sizes and srcset from default', async () => {
     const wrapper = createComponent({ ...item, srcset: [210, 220, 230], sizes: [210, 220, 230] })
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
     expect(main.exists()).toBe(true)
+    wrapper.vm.triggerIntersection({ isIntersecting: true })
+    await wrapper.vm.$nextTick()
     const expected = '(max-width: 210px) 210px, (max-width: 220px) 220px, (max-width: 230px) 230px 1080px'
     expect(main.attributes().sizes).toBe(expected)
     const expectedSrcset = 'https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-210/lion_BllLvaqVn.jpg 210w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-220/lion_BllLvaqVn.jpg 220w, https://ik.imagekit.io/6xhf1gnexgdgk/tr:w-230/lion_BllLvaqVn.jpg 230w'
@@ -155,12 +161,14 @@ describe('When I create the VueImageKit component', () => {
     expect(main.attributes().sizes).toContain('1366px')
   })
 
-  it('should have a custom transform', () => {
+  it('should have a custom transform', async () => {
     // https://imagekit.io/features/advanced-image-manipulation-blur-rotate-crop-background-radius
     const customTransform = 'c-at_max,bl-1:r-20,bg-FFCFA1'
     const wrapper = createComponent({ ...item, customTransform })
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
     expect(main.exists()).toBe(true)
+    wrapper.vm.triggerIntersection({ isIntersecting: true })
+    await wrapper.vm.$nextTick()
     expect(main.attributes().srcset).toContain(customTransform)
   })
 
