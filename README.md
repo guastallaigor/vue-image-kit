@@ -15,17 +15,20 @@
     <a href="https://www.npmjs.com/package/vue-image-kit"><img src="https://img.shields.io/npm/dt/vue-image-kit.svg" alt="Total Downloads"></a>
     <a href="https://github.com/guastallaigor/vue-image-kit/releases"><img src="https://img.shields.io/npm/v/vue-image-kit.svg" alt="Latest Release"></a>
     <a href="http://standardjs.com"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Style standard"></a>
+    <a href="https://app.netlify.com/sites/vue-image-kit/deploys"><img src="https://api.netlify.com/api/v1/badges/6b76a9c5-e99e-4f34-88d9-aac5b7cc4219/deploy-status" alt="Netlify Status"></a>
 </p>
 
 > **Notes:**
 > This is an unofficial project.
 > I do not work or am I affiliated with Image Kit
 
-> :warning: **Warning**: This project is in it's early stage. I do not recommend to use this in a production environment yet! :warning:
-
 ## Demo
 
 [![Edit Checkbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-image-kit-keeh1)
+
+## Storybook
+
+Go to https://vue-image-kit.netlify.com
 
 ## How does it work
 
