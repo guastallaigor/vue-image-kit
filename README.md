@@ -18,7 +18,7 @@
     <a href="https://app.netlify.com/sites/vue-image-kit/deploys"><img src="https://api.netlify.com/api/v1/badges/6b76a9c5-e99e-4f34-88d9-aac5b7cc4219/deploy-status" alt="Netlify Status"></a>
 </p>
 
-> **Notes:**
+> **Note:**
 > This is an unofficial project.
 > I do not work or am I affiliated with Image Kit
 
