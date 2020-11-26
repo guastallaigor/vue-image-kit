@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { storiesOf } from '@storybook/vue'
-import { withKnobs, array, text, number } from '@storybook/addon-knobs'
+import { withKnobs, array, text, number, boolean } from '@storybook/addon-knobs'
 import VueImageKit from '../src/components/VueImageKit'
 
 const timelineStory = storiesOf('VueImageKit', module)
@@ -67,20 +67,28 @@ timelineStory.add('Default', () => {
       alt: {
         type: String,
         default: text('Alt', '')
+      },
+      lazyLoad: {
+        type: Boolean,
+        default: boolean('Lazy Load', true)
       }
     },
-    template: `<div><div style="height:4500px;width:100vw;background:gray">&nbsp;</div><vue-image-kit
-      :hash="hash"
-      :src="src"
-      :placeholder="placeholder"
-      :background-color="backgroundColor"
-      :srcset="srcset"
-      :sizes="sizes"
-      :width="width"
-      :height="height"
-      :alt="alt"
-      :default-size="defaultSize"
-      :custom-transform="customTransform"
-    /></div>`
+    template: `<div>
+      <div style="height:2500px;width:100vw;background:gray">&nbsp;</div>
+      <vue-image-kit
+        :hash="hash"
+        :src="src"
+        :placeholder="placeholder"
+        :background-color="backgroundColor"
+        :srcset="srcset"
+        :sizes="sizes"
+        :width="width"
+        :height="height"
+        :alt="alt"
+        :lazy-load="lazyLoad"
+        :default-size="defaultSize"
+        :custom-transform="customTransform"
+      />
+    </div>`
   }
 })

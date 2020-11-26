@@ -1,9 +1,39 @@
 <template>
-  <div class="vue-image-kit">
-    <div v-if="dataUrl" class="vue-image-kit__placeholder" :style="{ backgroundColor }">
-      <img :src="placeholder || dataUrl" alt="Placeholder" :style="{ width: `${width}px`, height: `${height}px` }"/>
-    </div>
-    <img class="vue-image-kit__img" :sizes="getSizes" :alt="alt" :style="{ width: `${width}px`, height: `${height}px` }"/>
+  <div
+    :class="{ 'vue-image-kit--loaded': !lazyLoad }"
+    class="vue-image-kit"
+    ref="main"
+  >
+    <template v-if="lazyLoad">
+      <div
+        v-if="getDataUrl"
+        :key="getRandomId"
+        :style="{ backgroundColor }"
+        class="vue-image-kit__placeholder"
+      >
+        <img
+          :src="placeholder || getDataUrl"
+          :style="{ width: `${width}px`, height: `${height}px` }"
+          alt="Placeholder"
+          ref="placeholder"
+        />
+      </div>
+      <img
+        :sizes="getSizes"
+        :style="{ width: `${width}px`, height: `${height}px` }"
+        :alt="alt"
+        class="vue-image-kit__img"
+        ref="lazyLoad"
+      />
+    </template>
+    <img
+      v-else
+      :sizes="getSizes"
+      :style="{ width: `${width}px`, height: `${height}px` }"
+      :alt="alt"
+      ref="normalLoad"
+      class="vue-image-kit__img"
+    />
   </div>
 </template>
 
@@ -54,6 +84,10 @@ export default {
     customTransform: {
       type: String,
       default: ''
+    },
+    lazyLoad: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
@@ -63,7 +97,10 @@ export default {
     timeOut: null
   }),
   computed: {
-    dataUrl () {
+    getRandomId () {
+      return Math.random().toString(36).substr(2, 9)
+    },
+    getDataUrl () {
       const { width, height, showCanvas } = this
 
       if (!width || !height || !showCanvas) return ''
@@ -79,7 +116,9 @@ export default {
       const { srcset, imageKitPrefix, hash, customTransform, src } = this
 
       return srcset
-        .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform ? ',' + customTransform : ''}/${src} ${size}w`)
+        .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform
+          ? ',' + customTransform
+          : ''}/${src} ${size}w`)
         .join(', ')
     },
     getSizes () {
@@ -98,26 +137,39 @@ export default {
     }
   },
   mounted () {
-    this.showCanvas = true
-    this.observer = new IntersectionObserver(([entry]) => {
-      this.triggerIntersection(entry)
-    })
-    this.observer.observe(this.$el)
-    this.$once('hook:beforeDestroy', () => {
-      this.observer.disconnect()
+    if (this.lazyLoad) {
+      this.initLazyLoad()
+      return
+    }
 
-      if (this.timeOut) {
-        clearTimeout(this.timeOut)
-      }
-    })
+    this.initNormalLoad()
   },
   methods: {
+    initNormalLoad () {
+      const img = this.$refs.normalLoad
+      this.setImgAttributes(img)
+    },
+    initLazyLoad () {
+      this.showCanvas = true
+      this.observer = new IntersectionObserver(([entry]) => {
+        this.triggerIntersection(entry)
+      })
+      this.observer.observe(this.$refs.main)
+      this.$once('hook:beforeDestroy', () => {
+        this.observer.disconnect()
+
+        if (this.timeOut) {
+          clearTimeout(this.timeOut)
+        }
+      })
+    },
     onloadImage (imgEl) {
       delete imgEl.onload
-      const { $el } = this
-      const placeholder = $el.querySelector('.vue-image-kit__placeholder')
+      const { main, placeholder } = this.$refs
 
-      $el.classList.add('vue-image-kit--loaded')
+      if (main) {
+        main.classList.add('vue-image-kit--loaded')
+      }
 
       if (placeholder) {
         this.timeOut = setTimeout(() => {
@@ -125,22 +177,25 @@ export default {
         }, 300)
       }
     },
+    setImgAttributes (img) {
+      const { srcset, getSrcset, imageKitPrefix, hash, src } = this
+      this.showCanvas = false
+
+      if (srcset) {
+        img.srcset = getSrcset
+      }
+
+      img.src = `${imageKitPrefix}/${hash}/${src}`
+    },
     triggerIntersection (entry = {}) {
-      const { $el, srcset, getSrcset, imageKitPrefix, hash, src } = this
-      const img = $el.querySelector('.vue-image-kit__img')
+      const img = this.$refs.lazyLoad
 
       img.onload = function () {
         this.onloadImage(img)
       }.bind(this)
 
       if (entry.isIntersecting) {
-        this.showCanvas = false
-
-        if (srcset) {
-          img.srcset = getSrcset
-        }
-
-        img.src = `${imageKitPrefix}/${hash}/${src}`
+        this.setImgAttributes(img)
         this.observer.disconnect()
       }
     }
