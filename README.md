@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-    <a href="https://circleci.com/gh/guastallaigor/vue-image-kit"><img src="img.shields.io/circleci/build/github/guastallaigor/vue-horizontal-timeline/master?label=circleci&logo=circleci" alt="Build"></a>
+    <a href="https://circleci.com/gh/guastallaigor/vue-image-kit"><img src="https://img.shields.io/circleci/build/github/guastallaigor/vue-image-kit/master?label=circleci&logo=circleci" alt="Build"></a>
     <a href="https://codecov.io/gh/guastallaigor/vue-image-kit"><img src="https://codecov.io/gh/guastallaigor/vue-image-kit/branch/master/graph/badge.svg" alt="Code Coverage"></a>
     <a href="https://www.npmjs.com/package/vue-image-kit"><img src="https://img.shields.io/npm/dt/vue-image-kit.svg" alt="Total Downloads"></a>
     <a href="https://github.com/guastallaigor/vue-image-kit/releases"><img src="https://img.shields.io/npm/v/vue-image-kit.svg" alt="Latest Release"></a>
