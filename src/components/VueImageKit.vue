@@ -117,10 +117,10 @@ export default {
 
       return srcset
         ? srcset
-        .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform
+          .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform
           ? ',' + customTransform
           : ''}/${src} ${size}w`)
-        .join(', ')
+          .join(', ')
         : []
     },
     getSizes () {
