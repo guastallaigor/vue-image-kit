@@ -1,75 +1,122 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { storiesOf } from '@storybook/vue'
-import { withKnobs, array, text, number } from '@storybook/addon-knobs'
-import VueImageKit from '../src/components/VueImageKit'
+import VueImageKit from '../src/components/VueImageKit.vue'
 
-const timelineStory = storiesOf('VueImageKit', module)
-  .addParameters(
-    {
-      backgrounds: [
-        { name: 'Blue', value: 'blue' },
-        { name: 'Green', value: 'green' },
-        { name: 'Yellow', value: 'yellow' },
-        { name: 'Orange', value: 'orange' },
-        { name: 'Red', value: 'red' },
-        { name: 'Purple', value: 'purple' },
-        { name: 'Black', value: 'black' },
-        { name: 'White', value: 'white', default: true }
-      ]
-    }
-  )
-  .addDecorator(withKnobs)
-
-timelineStory.add('Default', () => {
-  return {
-    components: { VueImageKit },
-    props: {
-      hash: {
-        type: String,
-        default: text('Hash', '6xhf1gnexgdgk')
-      },
-      src: {
-        type: String,
-        default: text('Src', 'lion_BllLvaqVn.jpg')
-      },
-      placeholder: {
-        type: String,
-        default: text('Placeholder', '')
-      },
-      backgroundColor: {
-        type: String,
-        default: text('Background', '')
-      },
-      srcset: {
-        type: Array,
-        default: array('Srcset', [320, 480, 800])
-      },
-      sizes: {
-        type: Array,
-        default: array('Sizes', [])
-      },
-      defaultSize: {
-        type: Number,
-        default: number('Default size', 1080)
-      },
-      customTransform: {
-        type: String,
-        default: text('Custom transform', '')
-      },
-      width: {
-        type: Number,
-        default: number('Width', 1400)
-      },
-      height: {
-        type: Number,
-        default: number('Height', 800)
-      },
-      alt: {
-        type: String,
-        default: text('Alt', '')
-      }
+export default {
+  title: 'VueImageKit',
+  component: VueImageKit,
+  parameters: {
+    a11y: {
+      element: '#root',
+      config: {},
+      options: {},
+      manual: true,
     },
-    template: `<div><div style="height:4500px;width:100vw;background:gray">&nbsp;</div><vue-image-kit
+    controls: { hideNoControlsWarning: true },
+    docs: {
+      inlineStories: true
+    },
+    backgrounds: [
+      { name: 'Blue', value: 'blue' },
+      { name: 'Green', value: 'green' },
+      { name: 'Yellow', value: 'yellow' },
+      { name: 'Orange', value: 'orange' },
+      { name: 'Red', value: 'red' },
+      { name: 'Purple', value: 'purple' },
+      { name: 'Black', value: 'black' },
+      { name: 'White', value: 'white', default: true }
+    ]
+  },
+  argTypes: {
+    hash: {
+      control: 'text'
+    },
+    src: {
+      control: 'text'
+    },
+    placeholder: {
+      control: 'text'
+    },
+    backgroundColor: {
+      control: 'text'
+    },
+    srcset: {
+      control: 'array'
+    },
+    defaultSize: {
+      control: 'number'
+    },
+    customTransform: {
+      control: 'text'
+    },
+    width: {
+      control: 'number'
+    },
+    height: {
+      control: 'number'
+    },
+    alt: {
+      control: 'text'
+    },
+    lazyLoad: {
+      control: 'boolean'
+    }
+  }
+}
+
+export const DefaultComponent = () => ({
+  components: { VueImageKit },
+  props: {
+    hash: {
+      type: String,
+      default: '6xhf1gnexgdgk'
+    },
+    src: {
+      type: String,
+      default: 'lion_BllLvaqVn.jpg'
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    backgroundColor: {
+      type: String,
+      default: 'Background'
+    },
+    srcset: {
+      type: Array,
+      default: [320, 480, 800]
+    },
+    sizes: {
+      type: Array,
+      default: []
+    },
+    defaultSize: {
+      type: Number,
+      default: 1080
+    },
+    customTransform: {
+      type: String,
+      default: ''
+    },
+    width: {
+      type: Number,
+      default: 1400
+    },
+    height: {
+      type: Number,
+      default: 800
+    },
+    alt: {
+      type: String,
+      default: ''
+    },
+    lazyLoad: {
+      type: Boolean,
+      default: true
+    }
+  },
+  template: `<div>
+    <div style="height:2500px;width:100vw;background:gray">&nbsp;</div>
+    <vue-image-kit
       :hash="hash"
       :src="src"
       :placeholder="placeholder"
@@ -79,8 +126,9 @@ timelineStory.add('Default', () => {
       :width="width"
       :height="height"
       :alt="alt"
+      :lazy-load="lazyLoad"
       :default-size="defaultSize"
       :custom-transform="customTransform"
-    /></div>`
-  }
+    />
+  </div>`
 })

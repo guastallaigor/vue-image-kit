@@ -2,5 +2,6 @@
 
 exports[`When I create the VueImageKit component should match snapshot 1`] = `
 <div class="vue-image-kit">
-  <!----> <img sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, (max-width: 800px) 760px 1080px" alt="" class="vue-image-kit__img"></div>
+  <!----> <img sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, (max-width: 800px) 760px 1080px" alt="" class="vue-image-kit__img">
+</div>
 `;
