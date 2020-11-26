@@ -115,7 +115,7 @@ export const DefaultComponent = () => ({
     }
   },
   template: `<div>
-    <div style="height:2500px;width:100vw;background:gray">&nbsp;</div>
+    <div style="height:1000px;width:100vw;background:gray">&nbsp;</div>
     <vue-image-kit
       :hash="hash"
       :src="src"
