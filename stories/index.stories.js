@@ -41,6 +41,9 @@ export default {
     srcset: {
       control: 'array'
     },
+    sizes: {
+      control: 'array'
+    },
     defaultSize: {
       control: 'number'
     },
