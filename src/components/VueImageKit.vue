@@ -116,10 +116,12 @@ export default {
       const { srcset, imageKitPrefix, hash, customTransform, src } = this
 
       return srcset
+        ? srcset
         .map(size => `${imageKitPrefix}/${hash}/tr:w-${size}${customTransform
           ? ',' + customTransform
           : ''}/${src} ${size}w`)
         .join(', ')
+        : []
     },
     getSizes () {
       const { sizes, srcset, defaultSize } = this

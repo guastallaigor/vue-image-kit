@@ -34,11 +34,6 @@ describe('When I create the VueImageKit component', () => {
     return shallowMount(VueImageKit, { propsData })
   }
 
-  it('should be a Vue instance', () => {
-    const wrapper = createComponent(item)
-    expect(wrapper.find(VueImageKit).isVueInstance()).toBe(true)
-  })
-
   it('should validate all props', () => {
     const consoleLog = console.error
     console.error = jest.fn()
@@ -88,6 +83,10 @@ describe('When I create the VueImageKit component', () => {
     expect(alt.required).toBeFalsy()
     expect(alt.type).toBe(String)
     expect(alt.default).toBe('')
+    const lazyLoad = wrapper.vm.$options.props.lazyLoad
+    expect(lazyLoad.required).toBeFalsy()
+    expect(lazyLoad.type).toBe(Boolean)
+    expect(lazyLoad.default).toBe(true)
     const component = wrapper.find('.vue-image-kit')
     expect(component.exists()).toBe(true)
     console.error = consoleLog
@@ -159,6 +158,17 @@ describe('When I create the VueImageKit component', () => {
     const main = wrapper.find('.vue-image-kit > .vue-image-kit__img')
     expect(main.exists()).toBe(true)
     expect(main.attributes().sizes).toContain('1366px')
+  })
+
+  it('should not have lazy load', () => {
+    const wrapper = createComponent({ ...item, lazyLoad: false })
+    const main = wrapper.find('.vue-image-kit')
+    expect(main.exists()).toBe(true)
+    expect(main.classes()).toContain('vue-image-kit--loaded')
+    const placeholder = wrapper.find('.vue-image-kit__placeholder')
+    expect(placeholder.exists()).toBe(false)
+    expect(wrapper.vm.showCanvas).toBe(false)
+    expect(wrapper.vm.$refs.normalLoad).toBeInstanceOf(HTMLImageElement)
   })
 
   it('should have a custom transform', async () => {
