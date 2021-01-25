@@ -130,7 +130,7 @@ export default {
       if (sizes && sizes.length && (sizes.length === srcset.length)) {
         sizesString = srcset.map((size, idx) => `(max-width: ${size}px) ${sizes[idx]}px`).join(', ')
       } else {
-        sizesString = srcset.map(size => `(max-width: ${size}px) ${parseInt(size, 10) - 40}px`).join(', ')
+        sizesString = srcset.map(size => `(max-width: ${size}px) ${size}px`).join(', ')
       }
 
       sizesString += ` ${defaultSize}px`
