@@ -150,7 +150,7 @@ export default {
   methods: {
     initNormalLoad () {
       const img = this.$refs.normalLoad
-      this.isImageLoaded = true;
+      this.isImageLoaded = true
       this.setImgAttributes(img)
     },
     initLazyLoad () {

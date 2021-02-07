@@ -243,15 +243,15 @@ describe('When I create the VueImageKit component', () => {
         transition: false
       }
     })
-    const observe = jest.fn();
-    const unobserve = jest.fn();
-    const disconnect = jest.fn();
-    const takeRecords = jest.fn();
+    const observe = jest.fn()
+    const unobserve = jest.fn()
+    const disconnect = jest.fn()
+    const takeRecords = jest.fn()
     window.IntersectionObserver = jest.fn(() => ({
       observe,
       unobserve,
       disconnect,
-      takeRecords,
+      takeRecords
     }))
     expect(wrapper.exists()).toBe(true)
     wrapper.vm.initLazyLoad()
@@ -267,8 +267,8 @@ describe('When I create the VueImageKit component', () => {
     const observerCallback = window.IntersectionObserver.mock.calls[0][0]
     const mockEntry = { isIntersecting: true }
     observerCallback([mockEntry])
-    expect(wrapper.vm.observer.observe).toHaveBeenCalled();
-    expect(wrapper.vm.triggerIntersection).toHaveBeenCalledTimes(1);
+    expect(wrapper.vm.observer.observe).toHaveBeenCalled()
+    expect(wrapper.vm.triggerIntersection).toHaveBeenCalledTimes(1)
   })
 
   it('should not trigger intersection', () => {
@@ -280,15 +280,15 @@ describe('When I create the VueImageKit component', () => {
         transition: false
       }
     })
-    const observe = jest.fn();
-    const unobserve = jest.fn();
-    const disconnect = jest.fn();
-    const takeRecords = jest.fn();
+    const observe = jest.fn()
+    const unobserve = jest.fn()
+    const disconnect = jest.fn()
+    const takeRecords = jest.fn()
     window.IntersectionObserver = jest.fn(() => ({
       observe,
       unobserve,
       disconnect,
-      takeRecords,
+      takeRecords
     }))
     expect(wrapper.exists()).toBe(true)
     wrapper.vm.initLazyLoad()
@@ -299,8 +299,8 @@ describe('When I create the VueImageKit component', () => {
     const observerCallback = window.IntersectionObserver.mock.calls[0][0]
     const mockEntry = { isIntersecting: false }
     observerCallback([mockEntry])
-    expect(wrapper.vm.setImgAttributes).not.toHaveBeenCalled();
-    expect(wrapper.vm.observer.disconnect).not.toHaveBeenCalled();
+    expect(wrapper.vm.setImgAttributes).not.toHaveBeenCalled()
+    expect(wrapper.vm.observer.disconnect).not.toHaveBeenCalled()
   })
 
   it('should match snapshot', () => {
