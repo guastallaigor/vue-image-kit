@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ 'vue-image-kit--loaded': !lazyLoad }"
+    :class="{ 'vue-image-kit--loaded': isImageLoaded }"
     class="vue-image-kit"
     ref="main"
   >
@@ -93,6 +93,7 @@ export default {
   data: () => ({
     imageKitPrefix: 'https://ik.imagekit.io',
     showCanvas: true,
+    isImageLoaded: false,
     observer: null,
     timeOut: null
   }),
@@ -149,6 +150,7 @@ export default {
   methods: {
     initNormalLoad () {
       const img = this.$refs.normalLoad
+      this.isImageLoaded = true;
       this.setImgAttributes(img)
     },
     initLazyLoad () {
@@ -167,11 +169,8 @@ export default {
     },
     onloadImage (imgEl) {
       delete imgEl.onload
-      const { main, placeholder } = this.$refs
-
-      if (main) {
-        main.classList.add('vue-image-kit--loaded')
-      }
+      const { placeholder } = this.$refs
+      this.isImageLoaded = true
 
       if (placeholder) {
         this.timeOut = setTimeout(() => {
@@ -182,11 +181,7 @@ export default {
     setImgAttributes (img) {
       const { srcset, getSrcset, imageKitPrefix, hash, src } = this
       this.showCanvas = false
-
-      if (srcset) {
-        img.srcset = getSrcset
-      }
-
+      img.srcset = srcset && getSrcset
       img.src = `${imageKitPrefix}/${hash}/${src}`
     },
     triggerIntersection (entry = {}) {
