@@ -119,7 +119,7 @@ plugins: [
 | placeholder     | String  | ''              | false    | Images placeholder. Here you can pass a link |
 | backgroundColor | String  | ''              | false    | Background color of the images placeholder |
 | srcset          | Array   | [320, 480, 800] | false    | Array of numbers that will define the images srcset attribute. Each number correspond to one of the images width |
-| sizes           | Array   | []              | false    | Array of numbers that will define the images sizes attribute. Each number correspond to one of the images max-width. Empty by default, which gets each of the images srcset prop and subtract by 40px |
+| sizes           | Array   | []              | false    | Array of numbers that will define the images sizes attribute. Each number correspond to one of the images max-width. Empty by default, which gets each of the images srcset prop |
 | defaultSize     | Number  | 1080            | true     | Images default size. Must be larger than the largest srcset and sizes |
 | customTransform | String  | ''              | false    | Use this to append any extra image kit transform that you want |
 | width           | Number  | null            | false    | Images width. Width number in pixels. It will be set with inline style |
