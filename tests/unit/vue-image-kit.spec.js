@@ -25,8 +25,10 @@ function setupIntersectionObserverMock ({
 
 describe('When I create the VueImageKit component', () => {
   const item = { hash: '6xhf1gnexgdgk', src: 'lion_BllLvaqVn.jpg' }
+  let timeout
 
   beforeEach(() => {
+    timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms))
     setupIntersectionObserverMock()
   })
 
@@ -114,7 +116,7 @@ describe('When I create the VueImageKit component', () => {
     expect(main.attributes().alt).toBe('Lion image')
   })
 
-  it('should have background color in the placeholder', () => {
+  it('should have background color in the placeholder', async () => {
     const wrapper = createComponent({ ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png', backgroundColor: '#f40' })
     const placeholder = wrapper.find('.vue-image-kit > .vue-image-kit__placeholder')
     expect(placeholder.exists()).toBe(true)
@@ -137,7 +139,7 @@ describe('When I create the VueImageKit component', () => {
     expect(main.exists()).toBe(true)
     wrapper.vm.triggerIntersection({ isIntersecting: true })
     await wrapper.vm.$nextTick()
-    const expected = '(max-width: 200px) 160px, (max-width: 250px) 210px, (max-width: 300px) 260px 1080px'
+    const expected = '(max-width: 200px) 200px, (max-width: 250px) 250px, (max-width: 300px) 300px 1080px'
     expect(main.attributes().sizes).toBe(expected)
   })
 
@@ -160,10 +162,11 @@ describe('When I create the VueImageKit component', () => {
     expect(main.attributes().sizes).toContain('1366px')
   })
 
-  it('should not have lazy load', () => {
+  it('should not have lazy load', async () => {
     const wrapper = createComponent({ ...item, lazyLoad: false })
     const main = wrapper.find('.vue-image-kit')
     expect(main.exists()).toBe(true)
+    await timeout(1)
     expect(main.classes()).toContain('vue-image-kit--loaded')
     const placeholder = wrapper.find('.vue-image-kit__placeholder')
     expect(placeholder.exists()).toBe(false)
@@ -184,6 +187,7 @@ describe('When I create the VueImageKit component', () => {
 
   it('should disconnect the observer on destroy', () => {
     const wrapper = createComponent({ ...item })
+    wrapper.vm.timeOut = 300
     expect(wrapper.vm.observer).toStrictEqual(new IntersectionObserver({ observe: () => jest.fn(), unobserve: () => jest.fn() }))
     wrapper.destroy()
     expect(wrapper.vm.observer).toStrictEqual(new IntersectionObserver({ observe: () => jest.fn(), unobserve: () => jest.fn() }))
@@ -226,7 +230,77 @@ describe('When I create the VueImageKit component', () => {
     const placeholderAgain = wrapper.find('.vue-image-kit__placeholder')
     expect(placeholderAgain.exists()).toBe(false)
     expect(wrapper.vm.timeOut).not.toBeNull()
+    await timeout(350)
     expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeNull()
+  })
+
+  it('should trigger intersection - method testing', () => {
+    const localVue = createLocalVue()
+    const wrapper = mount(VueImageKit, {
+      propsData: { ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' },
+      localVue,
+      stubs: {
+        transition: false
+      }
+    })
+    const observe = jest.fn()
+    const unobserve = jest.fn()
+    const disconnect = jest.fn()
+    const takeRecords = jest.fn()
+    window.IntersectionObserver = jest.fn(() => ({
+      observe,
+      unobserve,
+      disconnect,
+      takeRecords
+    }))
+    expect(wrapper.exists()).toBe(true)
+    wrapper.vm.initLazyLoad()
+    wrapper.vm.triggerIntersection = jest.fn()
+    wrapper.vm.setImgAttributes = jest.fn()
+    expect(wrapper.vm.observer).not.toBeNull()
+    expect(wrapper.vm.showCanvas).toBeTruthy()
+    const img = wrapper.find('.vue-image-kit__img')
+    expect(img.exists()).toBe(true)
+    const placeholder = wrapper.find('.vue-image-kit__placeholder')
+    expect(placeholder.exists()).toBe(true)
+    expect(wrapper.vm.$el.querySelector('.vue-image-kit__placeholder')).toBeDefined()
+    const observerCallback = window.IntersectionObserver.mock.calls[0][0]
+    const mockEntry = { isIntersecting: true }
+    observerCallback([mockEntry])
+    expect(wrapper.vm.observer.observe).toHaveBeenCalled()
+    expect(wrapper.vm.triggerIntersection).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not trigger intersection', () => {
+    const localVue = createLocalVue()
+    const wrapper = mount(VueImageKit, {
+      propsData: { ...item, width: 300, height: 300, placeholder: 'https://ik.imagekit.io/6xhf1gnexgdgk/igor2_HJhiHMa54.png' },
+      localVue,
+      stubs: {
+        transition: false
+      }
+    })
+    const observe = jest.fn()
+    const unobserve = jest.fn()
+    const disconnect = jest.fn()
+    const takeRecords = jest.fn()
+    window.IntersectionObserver = jest.fn(() => ({
+      observe,
+      unobserve,
+      disconnect,
+      takeRecords
+    }))
+    expect(wrapper.exists()).toBe(true)
+    wrapper.vm.initLazyLoad()
+    wrapper.vm.setImgAttributes = jest.fn()
+    wrapper.vm.triggerIntersection = jest.fn()
+    expect(wrapper.vm.observer).not.toBeNull()
+    expect(wrapper.vm.showCanvas).toBeTruthy()
+    const observerCallback = window.IntersectionObserver.mock.calls[0][0]
+    const mockEntry = { isIntersecting: false }
+    observerCallback([mockEntry])
+    expect(wrapper.vm.setImgAttributes).not.toHaveBeenCalled()
+    expect(wrapper.vm.observer.disconnect).not.toHaveBeenCalled()
   })
 
   it('should match snapshot', () => {
