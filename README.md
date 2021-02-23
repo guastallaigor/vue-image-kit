@@ -51,28 +51,29 @@ $ yarn add vue-image-kit
 ```
 
 ## Quick start
+
 ### Vue.js
 
 You can import in your `main.js` file
 
 ```js
-import Vue from 'vue'
-import VueImageKit from 'vue-image-kit'
+import Vue from "vue";
+import VueImageKit from "vue-image-kit";
 
-Vue.use(VueImageKit)
+Vue.use(VueImageKit);
 ```
 
 Or locally in any component
 
 ```js
-import { VueImageKit } from 'vue-image-kit'
+import { VueImageKit } from "vue-image-kit";
 // In v0.2+ you don't need the brackets above
 
 export default {
   components: {
-    VueImageKit
-  }
-}
+    VueImageKit,
+  },
+};
 ```
 
 ### Nuxt.js
@@ -82,18 +83,16 @@ You can import as a Nuxt.js plugin
 `~/plugins/vue-image-kit.js`
 
 ```js
-import Vue from 'vue'
-import VueImageKit from 'vue-image-kit'
+import Vue from "vue";
+import VueImageKit from "vue-image-kit";
 
-Vue.use(VueImageKit)
+Vue.use(VueImageKit);
 ```
 
 and then import it in your `nuxt.config.js` file
 
 ```js
-plugins: [
-  { src: '~/plugins/vue-image-kit', mode: 'client' }
-]
+plugins: [{ src: "~/plugins/vue-image-kit", mode: "client" }];
 ```
 
 ## Basic usage
@@ -112,20 +111,20 @@ plugins: [
 
 ## Props
 
-| Property name   | Type    | Default         | Required | Description                                                                         |
-|-----------------|---------|-----------------|----------|-------------------------------------------------------------------------------------|
-| hash            | String  | null            | true     | Images hash. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the hash is '6xhf1gnexgdgk' |
-| src             | String  | null            | true     | Images source. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the source is 'lion_BllLvaqVn.jpg' |
-| placeholder     | String  | ''              | false    | Images placeholder. Here you can pass a link |
-| backgroundColor | String  | ''              | false    | Background color of the images placeholder |
-| srcset          | Array   | [320, 480, 800] | false    | Array of numbers that will define the images srcset attribute. Each number correspond to one of the images width |
+| Property name   | Type    | Default         | Required | Description                                                                                                                                                                      |
+| --------------- | ------- | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| hash            | String  | null            | true     | Images hash. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the hash is '6xhf1gnexgdgk'                                                    |
+| src             | String  | null            | true     | Images source. Example: Take this image -> https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg, the source is 'lion_BllLvaqVn.jpg'                                           |
+| placeholder     | String  | ''              | false    | Images placeholder. Here you can pass a link                                                                                                                                     |
+| backgroundColor | String  | ''              | false    | Background color of the images placeholder                                                                                                                                       |
+| srcset          | Array   | [320, 480, 800] | false    | Array of numbers that will define the images srcset attribute. Each number correspond to one of the images width                                                                 |
 | sizes           | Array   | []              | false    | Array of numbers that will define the images sizes attribute. Each number correspond to one of the images max-width. Empty by default, which gets each of the images srcset prop |
-| defaultSize     | Number  | 1080            | true     | Images default size. Must be larger than the largest srcset and sizes |
-| customTransform | String  | ''              | false    | Use this to append any extra image kit transform that you want |
-| width           | Number  | null            | false    | Images width. Width number in pixels. It will be set with inline style |
-| height          | Number  | null            | false    | Images height. Height number in pixels. It will be set with inline style |
-| alt             | String  | ''              | false    | Images alt attribute |
-| lazyLoad        | Boolean | true            | false    | If you don't want to use the built in lazy load, you can set this to false, then the image will not be lazy loaded, and you can setup your own lazy load |
+| defaultSize     | Number  | 1080            | true     | Images default size. Must be larger than the largest srcset and sizes                                                                                                            |
+| customTransform | String  | ''              | false    | Use this to append any extra image kit transform that you want                                                                                                                   |
+| width           | Number  | null            | false    | Images width. Width number in pixels. It will be set with inline style                                                                                                           |
+| height          | Number  | null            | false    | Images height. Height number in pixels. It will be set with inline style                                                                                                         |
+| alt             | String  | ''              | false    | Images alt attribute                                                                                                                                                             |
+| lazyLoad        | Boolean | true            | false    | If you don't want to use the built in lazy load, you can set this to false, then the image will not be lazy loaded, and you can setup your own lazy load                         |
 
 ## Development
 
@@ -140,6 +139,7 @@ git clone https://github.com/YOUR_GITHUB_USERNAME/vue-image-kit.git
 cd vue-image-kit
 yarn
 ```
+
 ### Storybook
 
 For visual testing, this project contains storybook which you can run by doing the next command
@@ -168,7 +168,7 @@ There's a `pre-push` hook that runs all the unit tests before you can push it
 
 If an error occurs, you can use the `npm run commit:retry` command that runs the previous `npm run commit` that you already filled
 
-<a href="https://www.buymeacoffee.com/guastallaigor" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C1C63QCB8)
 
 ## License
 
